@@ -7,13 +7,12 @@
   services.postgres.enable = true;
   # Use https://search.nixos.org/packages to find packages
   packages = [
-    
+    pkgs.gnumake
   ];
 
   # Sets environment variables in the workspace
   env = {
     # You can get a Gemini API key through the IDX Integrations panel to the left!
-    POSTGRESQL_CONN_STRING = "postgresql://user:my_password@localhost:5432/postgres?sslmode=disable";
   };
 
   idx = {
@@ -28,17 +27,17 @@
       # Runs when a workspace is first created
       onCreate = {
         default.openFiles = [
-          "README.md" "example.sql"
+          "Makefile"
         ];
         # Example: install JS dependencies from NPM
         setup = ''
-          mkdir db
-          wget -O db/dvdrental.tar https://raw.githubusercontent.com/salbifaza/dibimbing-sql-part-1/master/database/postgresql/dvdrental.tar
+          mkdir data
+          wget -O data/dvdrental.tar https://raw.githubusercontent.com/salbifaza/dibimbing-sql-part-1/master/database/postgresql/dvdrental.tar
           initdb -D local
           psql --dbname=postgres -c "ALTER USER \"user\" PASSWORD 'my_password';"
           psql --dbname=postgres -c "CREATE USER postgres WITH PASSWORD 'postgres' SUPERUSER;"
           psql --dbname=postgres -c "CREATE DATABASE dvdrental;"
-          pg_restore -U postgres -d dvdrental /home/user/dibimbing-sql/db/dvdrental.tar
+          pg_restore -U postgres -d dvdrental /home/user/dibimbing-sql/data/dvdrental.tar
         '';
       };
       # Runs when the workspace is (re)started
