@@ -1,5 +1,8 @@
 include .env
 
+help:
+	@echo "## postgres			- Run a Postgres container  "
+
 postgres: postgres-init postgres-create postgres-restore
 
 postgres-init:
@@ -31,6 +34,6 @@ postgres-psql:
 postgres-down:
 	@docker compose -f docker/docker-compose-pgadmin.yml down 
 
-clean-up:
+clean:
 	@docker system prune --all --volumes --force
 
