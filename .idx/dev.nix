@@ -8,6 +8,8 @@
   # Use https://search.nixos.org/packages to find packages
   packages = [
     pkgs.gnumake
+    pkgs.python310
+    pkgs.python310Packages.pip
   ];
 
   # Sets environment variables in the workspace
@@ -33,11 +35,9 @@
         setup = ''
           mkdir data
           wget -O data/dvdrental.tar https://raw.githubusercontent.com/salbifaza/dibimbing-sql-part-1/master/database/postgresql/dvdrental.tar
-          initdb -D local
-          psql --dbname=postgres -c "ALTER USER \"user\" PASSWORD 'my_password';"
-          psql --dbname=postgres -c "CREATE USER postgres WITH PASSWORD 'postgres' SUPERUSER;"
-          psql --dbname=postgres -c "CREATE DATABASE dvdrental;"
-          pg_restore -U postgres -d dvdrental /home/user/dibimbing-sql/data/dvdrental.tar
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install -r requirements.txt
         '';
       };
       # Runs when the workspace is (re)started

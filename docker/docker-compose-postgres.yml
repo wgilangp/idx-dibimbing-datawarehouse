@@ -16,7 +16,7 @@ services:
       - ../.env
 
   postgres:
-    image: postgres:latest
+    image: postgres:13.12-bullseye
     container_name: ${POSTGRES_CONTAINER_NAME}
     restart: unless-stopped
     hostname: ${POSTGRES_CONTAINER_NAME}
@@ -26,7 +26,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
-      - "5434:5432"
+      - ${POSTGRES_PORT}:5432
     volumes:
        - ../sql:/sql
        - ../data:/data

@@ -7,7 +7,7 @@ postgres: postgres-init postgres-create postgres-restore
 
 postgres-init:
 	@docker network inspect data-network >/dev/null 2>&1 || docker network create data-network
-	@docker compose -f docker/docker-compose-pgadmin.yml --env-file .env up -d
+	@docker compose -f docker/docker-compose-postgres.yml --env-file .env up -d
 	@echo 'Postgres Docker Host	: ${POSTGRES_CONTAINER_NAME}' &&\
 		echo 'Postgres Account	: ${POSTGRES_USER}' &&\
 		echo 'Postgres password	: ${POSTGRES_PASSWORD}' &&\
@@ -33,6 +33,24 @@ postgres-psql:
 
 postgres-down:
 	@docker compose -f docker/docker-compose-pgadmin.yml down 
+
+mysql:
+	@docker network inspect data-network >/dev/null 2>&1 || docker network create data-network
+	@docker compose -f docker/docker-compose-mysql.yml --env-file .env up -d
+	@sleep 3
+	@docker exec -it ${MYSQL_CONTAINER_NAME} mysql -u root -p'${MYSQL_ROOT_PASSWORD}' -h 0.0.0.0 -e "GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_USER}'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
+	@docker exec -it ${MYSQL_CONTAINER_NAME} mysql -u root -p'${MYSQL_ROOT_PASSWORD}' -h 0.0.0.0 -e "CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE_DW};"
+
+python-env: python-env-create python-env-activate
+
+python-env-create:
+	@python -m venv ~/idx-dibimbing-sql/.venv
+	@pip install -r requirements.txt
+
+python-env-activate:
+	@source ~/idx-dibimbing-sql/.venv/bin/activate
+
+data_warehouse: mysql postgres python-env
 
 clean:
 	@docker system prune --all --volumes --force
