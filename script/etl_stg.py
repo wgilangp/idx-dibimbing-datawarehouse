@@ -9,15 +9,15 @@ load_dotenv()
 pg_user = os.getenv('POSTGRES_USER')
 pg_password = os.getenv('POSTGRES_PASSWORD') 
 pg_hostname = '127.0.0.1'
-pg_database = 'dvdrental'
-pg_port = 5434
+pg_database = os.getenv('POSTGRES_DB_NEW')
+pg_port = os.getenv('POSTGRES_PORT')
 
 # Destination MySQL connection parameters
 mysql_user = os.getenv('MYSQL_USER')
 mysql_password = os.getenv('MYSQL_PASSWORD')
 mysql_hostname = '127.0.0.1'
-mysql_database = 'dwh'
-mysql_port = 3306
+mysql_database = os.getenv('MYSQL_DATABASE_DW')
+mysql_port = os.getenv('MYSQL_PORT')
 
 # Create source PostgreSQL engine
 pg_engine = create_engine(
