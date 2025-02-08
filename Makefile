@@ -1,7 +1,10 @@
 include .env
 
 help:
-	@echo "## postgres			- Run a Postgres container  "
+	@echo "postgres			- Run a Postgres container"
+	@echo "mysql 			- Run a mysql container"
+	@echo "data_warehouse   - Run MySQL and PostgreSQL Container"
+	@echo "clean			- Clean all container"
 
 postgres: postgres-init postgres-create postgres-restore
 
@@ -40,14 +43,18 @@ mysql:
 	@sleep 10
 	@docker exec -it ${MYSQL_CONTAINER_NAME} mysql -u root -p'${MYSQL_ROOT_PASSWORD}' -h 0.0.0.0 -e "GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_USER}'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
 	@docker exec -it ${MYSQL_CONTAINER_NAME} mysql -u root -p'${MYSQL_ROOT_PASSWORD}' -h 0.0.0.0 -e "CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE_DW};"
+	@echo 'MySQL Docker Host	: ${MYSQL_CONTAINER_NAME}' &&\
+		echo 'MySQL Account		: ${MYSQL_USER}' &&\
+		echo 'MySQL password	: ${MYSQL_PASSWORD}'
 
-# python-env: python-env-create python-env-activate
+data_warehouse: mysql postgres python-env-cmdx
 
-python-env-cmd:
+python-env:
 	@echo 'Run Command Below'
 	@echo 'source ~/idx-dibimbing-sql/.venv/bin/activate && pip install -r requirements.txt'
 
-data_warehouse: mysql postgres python-env-cmd
+docker-stop:
+	@docker stop $$(docker ps -q)
 
 clean:
 	@docker system prune --all --volumes --force
