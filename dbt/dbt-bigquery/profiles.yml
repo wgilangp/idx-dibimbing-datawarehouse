@@ -1,7 +1,7 @@
 dibimbing:
-  target: dev
+  target: dev_bigquery
   outputs:
-    dev:
+    dev_bigquery:
       type: bigquery
       project: "{{ env_var('BIGQUERY_PROJECT') }}"
       dataset: "{{ env_var('BIGQUERY_DATASET') }}"
