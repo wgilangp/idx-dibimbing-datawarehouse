@@ -33,7 +33,7 @@
         ];
         # Example: install JS dependencies from NPM
         setup = ''
-          export $(grep -v '^#' .env | xargs
+          export $(grep -v '^#' .env | xargs)
           python -m venv .venv
           source .venv/bin/activate
           pip install -r requirements.txt
