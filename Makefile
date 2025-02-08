@@ -37,20 +37,17 @@ postgres-down:
 mysql:
 	@docker network inspect data-network >/dev/null 2>&1 || docker network create data-network
 	@docker compose -f docker/docker-compose-mysql.yml --env-file .env up -d
-	@sleep 3
+	@sleep 10
 	@docker exec -it ${MYSQL_CONTAINER_NAME} mysql -u root -p'${MYSQL_ROOT_PASSWORD}' -h 0.0.0.0 -e "GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_USER}'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
 	@docker exec -it ${MYSQL_CONTAINER_NAME} mysql -u root -p'${MYSQL_ROOT_PASSWORD}' -h 0.0.0.0 -e "CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE_DW};"
 
-python-env: python-env-create python-env-activate
+# python-env: python-env-create python-env-activate
 
-python-env-create:
-	@python -m venv ~/idx-dibimbing-sql/.venv
-	@pip install -r requirements.txt
+python-env-cmd:
+	@echo 'Run Command Below'
+	@echo 'source ~/idx-dibimbing-sql/.venv/bin/activate && pip install -r requirements.txt'
 
-python-env-activate:
-	@source ~/idx-dibimbing-sql/.venv/bin/activate
-
-data_warehouse: mysql postgres python-env
+data_warehouse: mysql postgres python-env-cmd
 
 clean:
 	@docker system prune --all --volumes --force

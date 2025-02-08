@@ -2,4 +2,7 @@
 .venv
 .vscode
 local
-archive
+/dbt/logs
+/dbt/target
+/dbt/creds/*
+/dbt/models/dibimbing

@@ -33,8 +33,6 @@
         ];
         # Example: install JS dependencies from NPM
         setup = ''
-          mkdir data
-          wget -O data/dvdrental.tar https://raw.githubusercontent.com/salbifaza/dibimbing-sql-part-1/master/database/postgresql/dvdrental.tar
           python -m venv .venv
           source .venv/bin/activate
           pip install -r requirements.txt
