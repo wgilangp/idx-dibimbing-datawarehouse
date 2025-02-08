@@ -19,7 +19,8 @@ postgres-init:
 	@echo '==========================================================='
 
 postgres-create:
-	@echo 'Starting Create Postgre User'
+	@echo 'Starting Create Postgre Database'
+	@docker exec -it ${POSTGRES_CONTAINER_NAME} psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} -c  "DROP DATABASE IF EXISTS ${POSTGRES_DB_NEW};"
 	@docker exec -it ${POSTGRES_CONTAINER_NAME} psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} -c  "CREATE DATABASE ${POSTGRES_DB_NEW};"
 	@sleep 5
 	@echo '==========================================================='
@@ -51,10 +52,13 @@ data_warehouse: mysql postgres python-env-cmdx
 
 python-env:
 	@echo 'Run Command Below'
-	@echo 'source ~/idx-dibimbing-sql/.venv/bin/activate && pip install -r requirements.txt'
+	@echo 'source .venv/bin/activate && pip install -r requirements.txt'
 
 docker-stop:
 	@docker stop $$(docker ps -q)
+
+setup-env:
+	@echo 'export $$(grep -v '^#' .env | xargs)'
 
 clean:
 	@docker system prune --all --volumes --force
