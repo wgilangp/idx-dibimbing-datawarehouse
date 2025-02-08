@@ -2,7 +2,3 @@
 .venv
 .vscode
 local
-/dbt/logs
-/dbt/target
-/dbt/creds/*
-/dbt/models/dibimbing
