@@ -3,7 +3,7 @@
 # Data Warehouse Project
 
 ## 📌 Overview
-Project ini adalah implementasi Data Warehouse menggunakan **MySQL** dan **PostgreSQL**, berdasarkan repository dari **Salbifaza**.
+Project ini adalah implementasi Data Warehouse menggunakan **MySQL** dan **PostgreSQL**, berdasarkan repository dari **Mas Salbifaza**.
 
 ## 🚀 Setup
 ```
@@ -17,4 +17,4 @@ Project ini adalah implementasi Data Warehouse menggunakan **MySQL** dan **Postg
 - **Hentikan semua container**: `make docker-stop`
 
 ## ✨ Author
-[Your Name](https://github.com/wgilangp)
+[Gilang](https://github.com/wgilangp)
